@@ -1,0 +1,11 @@
+/* Hovering images in the body*/
+
+.HoveringImg:hover{
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
+.HoveringImg{
+    height:130px
+}
+
