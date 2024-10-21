@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import DrUpulJayasinghe from '../assets/upul-jayasinghe.jpg';
 import DrErunikaDayaratna from '../assets/erunika-dayaratna.jpg';
 import contactImg from '../assets/contactImg.jpg';
@@ -6,10 +7,40 @@ import { faUser, faPhone, faEnvelope} from '@fortawesome/free-solid-svg-icons';
 import style from "../components/Contact.module.css";
 /*Contact Page*/ 
 function Contact() {
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [emailError, setEmailError] = useState('');
+
+  const verifyEmail = async (email) => {
+    try {
+      const apiKey = "fb9d8901765dc9a5dc43042de370306046a2c366";
+      const response = await fetch(`https://api.hunter.io/v2/email-verifier?email=${encodeURIComponent(email)}&api_key=${apiKey}`);
+      const data = await response.json();
+
+      if (data.data.status === "valid") {
+        setEmailVerified(true);
+        setEmailError('');
+      } else {
+        setEmailVerified(false);
+        setEmailError("The email address does not appear to be valid or existing.");
+      }
+    } catch (error) {
+      setEmailVerified(false);
+      setEmailError("An error occurred while verifying the email.");
+      console.error("Email verification error:", error);
+    }
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+    const email = formData.get("user_email");
+
+    // Verify email before submitting the form
+    await verifyEmail(email);
+
+    if (!emailVerified) {
+      return; // Prevent form submission if email is not valid
+    }
 
     formData.append("access_key", "dffdc218-3fd5-4ce9-b477-b1cae0107eb0");
 
@@ -27,8 +58,9 @@ function Contact() {
 
     if (res.success) {
       alert("Email sent successfully!");
-    event.target.reset(); // Clear the form fields
-    }else {
+      event.target.reset(); // Clear the form fields
+      setEmailVerified(false); // Reset email verification
+    } else {
       alert("Failed to send email. Please try again.");
     }
   };
@@ -104,6 +136,7 @@ function Contact() {
         <label>Email Address</label>
         <input type = "email" className = {style["field"]} placeholder = "Enter your Email address" name = "user_email" required
             title="Please enter a valid email address"/>
+            {emailError && <p style={{ color: 'red' , fontSize: 12 }}>{emailError}</p>}
         </div>
 
         <div className = {style["inputbox"]}>
