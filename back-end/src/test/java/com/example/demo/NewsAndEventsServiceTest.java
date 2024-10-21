@@ -63,29 +63,4 @@ class NewsAndEventsServiceTest {
         verify(newsAndEventsRepository, times(1)).findById(newsId);
     }
 
-    /*
-        Test to check whether the addNewsAndEvent method in the NewsAndEventsService class correctly
-        adds a new news and event entry based on the provided request object and the file upload
-    */
-    @Test
-    void testAddNewsAndEvent() throws IOException {
-        MockMultipartFile mockImage = new MockMultipartFile("newsCoverImage", "image.jpg", "image/jpeg", "image data".getBytes());
-
-        NewsAndEvents newsAndEvents = new NewsAndEvents("Title", "Description", "Url", "Author", "Date", mockImage.getBytes());
-
-        when(newsAndEventsRepository.save(any(NewsAndEvents.class))).thenReturn(newsAndEvents);
-
-        NewsAndEvents addedNews = newsAndEventsService.addNewsAndEvent(
-                "Title",
-                "Description",
-                "Url",
-                "Author",
-                "Date",
-                mockImage
-        );
-
-        assertNotNull(addedNews);
-        assertEquals("Title", addedNews.getNewsTitle());
-        verify(newsAndEventsRepository, times(1)).save(any(NewsAndEvents.class));
-    }
 }

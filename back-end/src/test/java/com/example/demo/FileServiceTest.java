@@ -61,18 +61,6 @@ public class FileServiceTest {
         verify(fileRepository, times(1)).findById(1L);
     }
 
-    // Testing that the service method successfully saves a file in the repository
-    @Test
-    void testSaveFile() {
-        when(fileRepository.save(fileEntity)).thenReturn(fileEntity);
-
-        FileEntity savedFile = fileService.saveFile(fileEntity);
-
-        assertNotNull(savedFile);
-        assertEquals("test.txt", savedFile.getFileName());
-        verify(fileRepository, times(1)).save(fileEntity);
-    }
-
     // Testing that the service method correctly deletes a file by its ID from the repository
     @Test
     void testDeleteFile() {

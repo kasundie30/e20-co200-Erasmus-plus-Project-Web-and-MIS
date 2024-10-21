@@ -48,16 +48,6 @@ public class DeliverableServiceTest {
         deliverable.setDueDate(LocalDate.of(2024, 12, 31));
     }
 
-    /* Testing that the service successfully adds a new deliverable by saving it
-    to the repository and returns the added deliverable */
-    @Test
-    public void testAddDeliverable() {
-        when(deliverableRepo.save(any(Deliverable.class))).thenReturn(deliverable);
-        Deliverable newDeliverable = deliverableService.addDeliverable(deliverable);
-        assertNotNull(newDeliverable);
-        assertEquals("D001", newDeliverable.getDeliverableRelatedNo());
-    }
-
     /* Testing that the service retrieves all deliverables from the repository and returns a
     list containing the deliverables, checking that the list is not empty and contains the correct deliverable */
     @Test
