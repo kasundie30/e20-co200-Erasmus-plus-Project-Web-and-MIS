@@ -117,22 +117,6 @@ function Header(){
     const handleToggle = (checked) => {
         setIsEditMode(checked);
         };
-    
-        // // Initialize the state with a function that reads from localStorage
-        // const [isEditMode, setIsEditMode] = useState(() => {
-        //     const savedEditModeValue = localStorage.getItem('isEditMode');
-        // return savedEditModeValue !== null ? JSON.parse(savedEditModeValue) : false; // Default to false if no saved value
-        // });
-    
-        // // Change the view mode and the edit mode when the switch handle is toggled
-        // const handleToggle = () => {
-
-        //     setIsEditMode(checked => ({
-        //         isEditMode: !checked.isEditMode}));
-        //     localStorage.setItem('isEditMode', JSON.stringify(isEditMode));
-        //     console.log(JSON.parse(localStorage.getItem('isEditMode')));
-        // };
-        
 
     // set hamburger menu to close when a link is clicked
     const handleLinkClick = () => {
