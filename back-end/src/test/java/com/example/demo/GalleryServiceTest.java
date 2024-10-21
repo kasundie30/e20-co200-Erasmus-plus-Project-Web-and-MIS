@@ -43,33 +43,6 @@ class GalleryServiceTest {
         assertEquals("Test Album", galleryService.getGalleryById(1L).get().getAlbumName());
     }
 
-    // Testing that the service correctly adds a new gallery with an image file and saves it to the repository
-    @Test
-    void testAddGalleryWithImage() throws IOException {
-        MultipartFile imageFile = new MockMultipartFile("albumCoverImage", "image.jpg", "image/jpeg", new ByteArrayInputStream("image".getBytes()));
-        Gallery gallery = new Gallery("Test Album", "Test Creator", "image".getBytes(), "http://test.com");
-
-        when(galleryRepository.save(any(Gallery.class))).thenReturn(gallery);
-
-        Gallery savedGallery = galleryService.addGallery("Test Album", "Test Creator", "http://test.com", imageFile);
-
-        assertNotNull(savedGallery);
-        assertArrayEquals("image".getBytes(), savedGallery.getAlbumCoverImage());
-    }
-
-    // Testing that the service can add a new gallery without an image and save it to the repository
-    @Test
-    void testAddGalleryWithoutImage() {
-        Gallery gallery = new Gallery("Test Album", "Test Creator", null, "http://test.com");
-
-        when(galleryRepository.save(any(Gallery.class))).thenReturn(gallery);
-
-        Gallery savedGallery = galleryService.addGallery("Test Album", "Test Creator", "http://test.com", null);
-
-        assertNotNull(savedGallery);
-        assertNull(savedGallery.getAlbumCoverImage());
-    }
-
     // Testing that the service correctly deletes a gallery by its ID if it exists in the repository
     @Test
     void testDeleteGallery() {

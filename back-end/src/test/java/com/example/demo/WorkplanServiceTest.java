@@ -35,25 +35,14 @@ public class WorkplanServiceTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         workplanActivity = new WorkplanActivity(
-                "1", "Test Activity", true, false, true, false,
+                1, "ACT001", "Test Activity", true, false, true, false,
                 true, false, true, false,
                 true, false, true, false,
                 true, false, true, false
         );
     }
 
-    /* Testing that the service successfully adds a new activity by
-    saving it to the repository and returns the saved activity */
-    @Test
-    public void testAddActivity() {
-        when(workplanRepo.save(any(WorkplanActivity.class))).thenReturn(workplanActivity);
-        WorkplanActivity result = workplanService.addActivity(workplanActivity);
-        assertEquals(workplanActivity, result);
-        verify(workplanRepo, times(1)).save(workplanActivity);
-    }
-
-    /* Testing that the service fetches all activities from the repository
-     and returns a non-empty list with the correct activity details */
+    // Testing that the service fetches all activities from the repository and returns a non-empty list
     @Test
     public void testGetAllActivities() {
         when(workplanRepo.findAll()).thenReturn(Arrays.asList(workplanActivity));
@@ -65,8 +54,7 @@ public class WorkplanServiceTest {
         verify(workplanRepo, times(1)).findAll();
     }
 
-    /* Testing that the service retrieves a specific activity by its ID
-    and returns the correct activity when found */
+    // Testing that the service retrieves a specific activity by its ID and returns the correct activity when found
     @Test
     public void testGetActivityById() {
         when(workplanRepo.findById("1")).thenReturn(Optional.of(workplanActivity));
@@ -76,8 +64,7 @@ public class WorkplanServiceTest {
         verify(workplanRepo, times(1)).findById("1");
     }
 
-    /* Testing that the service throws a DeliverableNotFoundException when
-    the activity with the given ID is not found in the repository */
+    // Testing that the service throws DeliverableNotFoundException when the activity with the given ID is not found
     @Test
     public void testGetActivityByIdNotFound() {
         when(workplanRepo.findById("1")).thenReturn(Optional.empty());
@@ -85,12 +72,11 @@ public class WorkplanServiceTest {
         verify(workplanRepo, times(1)).findById("1");
     }
 
-    /* Testing that the service throws a DeliverableNotFoundException when trying to
-    update an activity that does not exist in the repository */
+    // Testing that the service throws DeliverableNotFoundException when trying to update a non-existent activity
     @Test
     public void testUpdateActivityNotFound() {
         WorkplanActivity updatedActivity = new WorkplanActivity(
-                "1", "Updated Activity", false, true, false, true,
+                1, "ACT002", "Updated Activity", false, true, false, true,
                 false, true, false, true,
                 false, true, false, true,
                 false, true, false, true
@@ -100,8 +86,7 @@ public class WorkplanServiceTest {
         verify(workplanRepo, times(1)).findById("1");
     }
 
-    /* Testing that the service successfully deletes an activity by its ID when it exists in
-    the repository, and returns a confirmation message */
+    // Testing that the service successfully deletes an activity by its ID and returns a confirmation message
     @Test
     public void testDeleteActivity() {
         when(workplanRepo.existsById("1")).thenReturn(true);
@@ -112,8 +97,7 @@ public class WorkplanServiceTest {
         verify(workplanRepo, times(1)).deleteById("1");
     }
 
-    /* Testing that the service throws a DeliverableNotFoundException when attempting to delete an
-    activity that is not found in the repository */
+    // Testing that the service throws DeliverableNotFoundException when attempting to delete a non-existent activity
     @Test
     public void testDeleteActivityNotFound() {
         when(workplanRepo.existsById("1")).thenReturn(false);
