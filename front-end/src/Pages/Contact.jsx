@@ -7,63 +7,67 @@ import { faUser, faPhone, faEnvelope} from '@fortawesome/free-solid-svg-icons';
 import style from "../components/Contact.module.css";
 /*Contact Page*/ 
 function Contact() {
+  
   const [emailVerified, setEmailVerified] = useState(false);
   const [emailError, setEmailError] = useState('');
 
   const verifyEmail = async (email) => {
     try {
       const apiKey = "fb9d8901765dc9a5dc43042de370306046a2c366";
-      const response = await fetch(`https://api.hunter.io/v2/email-verifier?email=${encodeURIComponent(email)}&api_key=${apiKey}`);
+      const response = await fetch(
+        `https://api.hunter.io/v2/email-verifier?email=${encodeURIComponent(email)}&api_key=${apiKey}`
+      );
       const data = await response.json();
-
+  
       if (data.data.status === "valid") {
-        setEmailVerified(true);
-        setEmailError('');
+        setEmailError(''); 
+        return true;
       } else {
-        setEmailVerified(false);
         setEmailError("The email address does not appear to be valid or existing.");
+        return false;
       }
     } catch (error) {
-      setEmailVerified(false);
       setEmailError("An error occurred while verifying the email.");
       console.error("Email verification error:", error);
+      return false;
     }
   };
+  
 
   const onSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const email = formData.get("user_email");
-
-    // Verify email before submitting the form
-    await verifyEmail(email);
-
-    if (!emailVerified) {
+  
+    // Verify email and get the result directly
+    const isEmailValid = await verifyEmail(email);
+  
+    if (!isEmailValid) {
       return; // Prevent form submission if email is not valid
     }
-
+  
     formData.append("access_key", "dffdc218-3fd5-4ce9-b477-b1cae0107eb0");
-
+  
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
-
+  
     const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        Accept: "application/json",
       },
-      body: json
+      body: json,
     }).then((res) => res.json());
-
+  
     if (res.success) {
       alert("Email sent successfully!");
       event.target.reset(); // Clear the form fields
-      setEmailVerified(false); // Reset email verification
     } else {
       alert("Failed to send email. Please try again.");
     }
   };
+  
 
   return(
     <>
